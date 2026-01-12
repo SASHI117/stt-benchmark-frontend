@@ -115,7 +115,8 @@ function renderResults(results) {
     // WER
     const werCell = document.createElement("div");
     werCell.className = "wer-value";
-    werCell.textContent = result.wer != null ? `${result.wer}%` : "-";
+    werCell.textContent = result.wer != null ? result.wer.toFixed(3) : "-";
+
 
     // Latency
     const latencyCell = document.createElement("div");
