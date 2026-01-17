@@ -391,6 +391,7 @@ button:disabled {
 .col-wer,
 .col-latency,
 .col-status,
+.col-model,
 .col-transcript {
   text-align: center;
 }
@@ -557,6 +558,7 @@ button:disabled {
   .col-wer,
   .col-latency,
   .col-status,
+  .col-model,
   .col-transcript {
     text-align: left;
   }
