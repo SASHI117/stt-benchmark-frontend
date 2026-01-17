@@ -88,12 +88,10 @@ form.addEventListener("submit", async (e) => {
   } catch (error) {
     console.error("Error:", error);
     alert("Failed to connect to backend. Please check your connection and try again.");
-    
-    // Show empty state again
+
     loading.classList.add("hidden");
     emptyState.classList.remove("hidden");
   } finally {
-    // Re-enable button
     submitBtn.disabled = false;
     submitBtn.textContent = "Compare STT Providers";
   }
@@ -107,16 +105,20 @@ function renderResults(results) {
     const row = document.createElement("div");
     row.className = "result-row";
 
-    // Provider Name
+    // Provider
     const providerCell = document.createElement("div");
     providerCell.className = "provider-name";
     providerCell.textContent = result.provider;
+
+    // ✅ Model (NEW)
+    const modelCell = document.createElement("div");
+    modelCell.className = "model-name";
+    modelCell.textContent = result.model || "—";
 
     // WER
     const werCell = document.createElement("div");
     werCell.className = "wer-value";
     werCell.textContent = result.wer != null ? result.wer.toFixed(3) : "-";
-
 
     // Latency
     const latencyCell = document.createElement("div");
@@ -126,16 +128,16 @@ function renderResults(results) {
     // Status
     const statusCell = document.createElement("div");
     statusCell.style.textAlign = "center";
-    
+
     const statusBadge = document.createElement("span");
     statusBadge.className = `status-badge ${result.status === "success" ? "success" : "failed"}`;
-    
+
     const statusDot = document.createElement("div");
     statusDot.className = "status-dot";
-    
+
     const statusText = document.createElement("span");
     statusText.textContent = result.status === "success" ? "Success" : "Failed";
-    
+
     statusBadge.appendChild(statusDot);
     statusBadge.appendChild(statusText);
     statusCell.appendChild(statusBadge);
@@ -147,14 +149,14 @@ function renderResults(results) {
     transcriptBox.textContent = result.text || "—";
     transcriptCell.appendChild(transcriptBox);
 
-    // Append all cells to row
+    // Append cells (ORDER MATTERS)
     row.appendChild(providerCell);
+    row.appendChild(modelCell);        // ✅ added
     row.appendChild(werCell);
     row.appendChild(latencyCell);
     row.appendChild(statusCell);
     row.appendChild(transcriptCell);
 
-    // Append row to body
     resultsBody.appendChild(row);
   });
 }
