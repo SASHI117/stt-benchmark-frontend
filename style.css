@@ -375,7 +375,7 @@ button:disabled {
 /* Table Header */
 .table-header {
   display: grid;
-  grid-template-columns: 10% 10% 10% 10% 60%;
+  grid-template-columns: 10% 12% 8% 10% 10% 50%;
   gap: 12px;
   padding: 12px 16px;
   background: #f1f8f3;
@@ -405,7 +405,7 @@ button:disabled {
 /* Result Row */
 .result-row {
   display: grid;
-  grid-template-columns: 10% 10% 10% 10% 60%;
+  grid-template-columns:  10% 12% 8% 10% 10% 50%;
   gap: 12px;
   padding: 12px;
   background: white;
@@ -424,6 +424,13 @@ button:disabled {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-dark);
+}
+
+.model-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-gray);
+  text-align: center;
 }
 
 /* WER Column */
