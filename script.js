@@ -14,11 +14,7 @@ const resultsBody = document.getElementById("resultsBody");
 // Update upload text when file is selected
 audioInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
-  if (file) {
-    uploadText.textContent = file.name;
-  } else {
-    uploadText.textContent = "Click to upload";
-  }
+  uploadText.textContent = file ? file.name : "Click to upload";
 });
 
 // Form Submit Handler
@@ -35,27 +31,24 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // Show loading state
+  // UI State
   emptyState.classList.add("hidden");
   loading.classList.remove("hidden");
   resultsContainer.classList.add("hidden");
   submitBtn.disabled = true;
   submitBtn.textContent = "Comparing...";
 
-  // Clear previous results
   resultsBody.innerHTML = "";
 
   // Prepare form data
   const formData = new FormData();
   formData.append("audio", audioFile);
   formData.append("reference_text", referenceText);
-
   if (languageCode) {
     formData.append("language_code", languageCode);
   }
 
   try {
-    // Call backend API
     const response = await fetch(
       "https://stt-benchmark-backend-production.up.railway.app/benchmark",
       {
@@ -71,24 +64,21 @@ form.addEventListener("submit", async (e) => {
     const data = await response.json();
     const results = data.results;
 
-    // Sort results by WER (lower is better)
+    // Sort by WER (ascending)
     results.sort((a, b) => {
       if (a.wer == null) return 1;
       if (b.wer == null) return -1;
       return a.wer - b.wer;
     });
 
-    // Render results
     renderResults(results);
 
-    // Show results container
     loading.classList.add("hidden");
     resultsContainer.classList.remove("hidden");
 
   } catch (error) {
-    console.error("Error:", error);
-    alert("Failed to connect to backend. Please check your connection and try again.");
-
+    console.error(error);
+    alert("Failed to connect to backend");
     loading.classList.add("hidden");
     emptyState.classList.remove("hidden");
   } finally {
@@ -97,7 +87,7 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// Render Results Function
+// Render Results
 function renderResults(results) {
   resultsBody.innerHTML = "";
 
@@ -110,7 +100,7 @@ function renderResults(results) {
     providerCell.className = "provider-name";
     providerCell.textContent = result.provider;
 
-    // ✅ Model (NEW)
+    // Model
     const modelCell = document.createElement("div");
     modelCell.className = "model-name";
     modelCell.textContent = result.model || "—";
@@ -123,20 +113,24 @@ function renderResults(results) {
     // Latency
     const latencyCell = document.createElement("div");
     latencyCell.className = "latency-value";
-    latencyCell.textContent = result.latency_ms != null ? `${result.latency_ms} ms` : "-";
+    latencyCell.textContent =
+      result.latency_ms != null ? `${result.latency_ms} ms` : "-";
 
     // Status
     const statusCell = document.createElement("div");
     statusCell.style.textAlign = "center";
 
     const statusBadge = document.createElement("span");
-    statusBadge.className = `status-badge ${result.status === "success" ? "success" : "failed"}`;
+    statusBadge.className = `status-badge ${
+      result.status === "success" ? "success" : "failed"
+    }`;
 
     const statusDot = document.createElement("div");
     statusDot.className = "status-dot";
 
     const statusText = document.createElement("span");
-    statusText.textContent = result.status === "success" ? "Success" : "Failed";
+    statusText.textContent =
+      result.status === "success" ? "Success" : "Failed";
 
     statusBadge.appendChild(statusDot);
     statusBadge.appendChild(statusText);
@@ -149,9 +143,9 @@ function renderResults(results) {
     transcriptBox.textContent = result.text || "—";
     transcriptCell.appendChild(transcriptBox);
 
-    // Append cells (ORDER MATTERS)
+    // Append cells (ORDER MATCHES HEADER)
     row.appendChild(providerCell);
-    row.appendChild(modelCell);        // ✅ added
+    row.appendChild(modelCell);
     row.appendChild(werCell);
     row.appendChild(latencyCell);
     row.appendChild(statusCell);
