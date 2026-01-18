@@ -1,3 +1,7 @@
+// 🔐 AUTH GUARD (ADD THIS AT TOP)
+if (localStorage.getItem("isLoggedIn") !== "true") {
+  window.location.href = "login.html";
+}
 // DOM Elements
 const form = document.getElementById("benchmarkForm");
 const audioInput = document.getElementById("audio");
