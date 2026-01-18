@@ -9,13 +9,17 @@ body {
   height: 100vh;
 }
 
-/* MAIN LAYOUT */
+/* ===============================
+   MAIN LAYOUT
+================================ */
 .login-page {
   display: flex;
   height: 100vh;
 }
 
-/* LEFT SIDE */
+/* ===============================
+   LEFT SIDE (LOGO)
+================================ */
 .login-left {
   width: 50%;
   background: linear-gradient(135deg, #e8f5e9, #f1f8f3);
@@ -24,23 +28,31 @@ body {
   justify-content: center;
 }
 
+/* Center wrapper */
 .logo-wrapper {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.logo-wrapper img {
+/* Curved logo card */
+.logo-card {
+  background: #ffffff;
+  padding: 32px 40px;
+  border-radius: 28px; /* CURVED EDGES */
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Logo image */
+.logo-card img {
   width: 420px;
-  max-width: 80%;
+  max-width: 100%;
+  display: block;
 }
 
-.logo-wrapper p {
-  margin-top: 12px;
-  font-size: 20px;
-  color: #8b5a2b;
-  letter-spacing: 0.5px;
-}
-
-/* RIGHT SIDE */
+/* ===============================
+   RIGHT SIDE (LOGIN)
+================================ */
 .login-right {
   width: 50%;
   display: flex;
@@ -66,7 +78,9 @@ body {
   letter-spacing: 1px;
 }
 
-/* INPUTS */
+/* ===============================
+   INPUTS
+================================ */
 .input-group {
   display: flex;
   align-items: center;
@@ -90,7 +104,9 @@ body {
   font-size: 14px;
 }
 
-/* BUTTON */
+/* ===============================
+   BUTTON
+================================ */
 button {
   width: 100%;
   padding: 14px;
@@ -108,7 +124,9 @@ button:hover {
   opacity: 0.95;
 }
 
-/* ERROR */
+/* ===============================
+   ERROR
+================================ */
 .error {
   color: #d32f2f;
   font-size: 13px;
@@ -119,7 +137,9 @@ button:hover {
   display: none;
 }
 
-/* RESPONSIVE */
+/* ===============================
+   RESPONSIVE
+================================ */
 @media (max-width: 900px) {
   .login-page {
     flex-direction: column;
@@ -131,7 +151,7 @@ button:hover {
     height: 50%;
   }
 
-  .logo-wrapper img {
+  .logo-card img {
     width: 280px;
   }
 }
