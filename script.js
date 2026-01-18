@@ -2,7 +2,7 @@
 const session = JSON.parse(localStorage.getItem("session"));
 
 if (!session || session.user !== "admin@example.com") {
-  window.location.href = "login.html";
+  window.location.href = "login_new.html";
 }
 // DOM Elements
 const form = document.getElementById("benchmarkForm");
