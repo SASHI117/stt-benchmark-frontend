@@ -136,7 +136,11 @@ header img {
   color: var(--text-dark);
   margin-bottom: 8px;
 }
-
+.required {
+  color: #d32f2f;
+  margin-left: 4px;
+  font-weight: 700;
+}
 /* Upload Area */
 .upload-area {
   position: relative;
@@ -570,11 +574,6 @@ button:disabled {
 
   .transcript-box {
     margin-right: 0;
-  }
-  .required {
-   color: #d32f2f; /* red */
-   margin-left: 4px;
-   font-weight: 700;
   }
  
 }
