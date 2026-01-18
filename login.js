@@ -1,10 +1,20 @@
-// version: farmvaidya-login-2026-final-fix
+// version: farmvaidya-login-2026-final-final
 
-// Force-clear browser autofilled username
-window.addEventListener("load", () => {
+function clearUsername() {
   const usernameInput = document.getElementById("username");
   if (usernameInput) {
     usernameInput.value = "";
+  }
+}
+
+// Clear on page load
+window.addEventListener("load", clearUsername);
+
+// Clear again when user focuses the field
+document.addEventListener("DOMContentLoaded", () => {
+  const usernameInput = document.getElementById("username");
+  if (usernameInput) {
+    usernameInput.addEventListener("focus", clearUsername);
   }
 });
 
