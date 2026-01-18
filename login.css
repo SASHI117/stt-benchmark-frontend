@@ -176,3 +176,22 @@ button:active {
     max-width: 360px;
   }
 }
+/* ===============================
+   REMOVE CHROME AUTOFILL / KEY ICON
+   (DESKTOP ONLY – SAFE FOR MOBILE)
+================================ */
+
+/* Hide Chrome password manager icon */
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  position: absolute;
+  right: 0;
+}
+
+/* Remove autofill background color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  box-shadow: 0 0 0 1000px #f1f5f9 inset !important;
+  -webkit-text-fill-color: #1f2937 !important;
+}
