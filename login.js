@@ -8,7 +8,7 @@ form.addEventListener("submit", (e) => {
   const password = document.getElementById("password").value.trim();
 
   // TEMP credentials
-  if (username === "admin" && password === "admin123") {
+  if (username === "farmvaidya_admin" && password === "farmvaidya_2026") {
     localStorage.setItem("isLoggedIn", "true");
     window.location.href = "index.html";
   } else {
