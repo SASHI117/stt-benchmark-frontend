@@ -1,3 +1,10 @@
+// Force-clear autofilled username after page load
+window.addEventListener("load", () => {
+  const usernameInput = document.getElementById("username");
+  if (usernameInput) {
+    usernameInput.value = "";
+  }
+});
 // version: farmvaidya-login-2026-fix
 
 const form = document.getElementById("loginForm");
