@@ -15,7 +15,7 @@
       <div class="logo-wrapper">
         <div class="logo-card">
           <img src="assets/logo.png" alt="Farm Vaidya Logo" />
-        </div>  
+        </div>
       </div>
     </div>
 
@@ -25,18 +25,30 @@
         <h2>STT Providers Comparison</h2>
         <h4>LOGIN</h4>
 
-        <form id="loginForm">
+        <form id="loginForm" autocomplete="off">
           <div class="input-group">
             <span class="icon">👤</span>
-            <input id="username" type="text" placeholder="Username" required />
+            <input
+              id="username"
+              type="email"
+              placeholder="admin@example.com"
+              required
+            />
           </div>
 
           <div class="input-group">
             <span class="icon">🔒</span>
-            <input id="password" type="password" placeholder="Password" required />
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+              required
+            />
           </div>
 
-          <p id="errorMsg" class="error hidden">Incorrect username or password</p>
+          <p id="errorMsg" class="error hidden">
+            Incorrect username or password
+          </p>
 
           <button type="submit">LOGIN</button>
         </form>
