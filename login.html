@@ -6,8 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="login.css" />
 </head>
+
 <body>
   <div class="login-page">
+
     <!-- LEFT SIDE (LOGO) -->
     <div class="login-left">
       <div class="logo-wrapper">
@@ -16,46 +18,50 @@
         </div>
       </div>
     </div>
+
     <!-- RIGHT SIDE (LOGIN FORM) -->
     <div class="login-right">
       <div class="login-box">
         <h2>STT Providers Comparison</h2>
         <h4>LOGIN</h4>
-        <form id="loginForm" autocomplete="off">
+
+        <form id="loginForm" novalidate>
+          <!-- USERNAME -->
           <div class="input-group">
             <span class="icon">👤</span>
             <input
               id="username"
               type="text"
-              name="user_email_2026"
               placeholder="Username"
-              autocomplete="new-user"
-              readonly
-              onfocus="this.removeAttribute('readonly');"
               required
+              autocomplete="off"
             />
           </div>
+
+          <!-- PASSWORD -->
           <div class="input-group">
             <span class="icon">🔒</span>
             <input
               id="password"
               type="password"
-              name="user_pass_2026"
               placeholder="Password"
-              autocomplete="new-password"
-              readonly
-              onfocus="this.removeAttribute('readonly');"
               required
             />
           </div>
+
+          <!-- ERROR -->
           <p id="errorMsg" class="error hidden">
             Incorrect username or password
           </p>
+
+          <!-- LOGIN BUTTON -->
           <button type="submit">LOGIN</button>
         </form>
       </div>
     </div>
+
   </div>
+
   <script src="login.js"></script>
 </body>
 </html>
