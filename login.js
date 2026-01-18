@@ -7,12 +7,12 @@ form.addEventListener("submit", (e) => {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  // TEMP credentials
+  // ONLY valid credentials
   if (username === "farmvaidya_admin" && password === "farmvaidya_2026") {
     localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("username", username); // optional but good
     window.location.href = "index.html";
   } else {
-    errorMsg.textContent = "Incorrect username or password";
     errorMsg.classList.remove("hidden");
   }
 });
