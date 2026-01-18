@@ -26,28 +26,17 @@
     <!-- Main Card -->
     <div class="container">
       <div class="grid">
-
-        <!-- LEFT COLUMN (FORM) -->
+        <!-- LEFT COLUMN - FORM (30%) -->
         <div class="form-section">
           <form id="benchmarkForm">
-
             <!-- Upload Audio -->
             <div class="form-group">
               <label class="form-label">Upload Audio File</label>
-              <div class="upload-area">
-                <input
-                  type="file"
-                  id="audio"
-                  accept=".wav,.mp3,.m4a,.flac,.ogg,.webm"
-                  class="file-input"
-                />
+              <div class="upload-area" id="uploadArea">
+                <input type="file" id="audio" accept=".wav,.mp3,.m4a,.flac,.ogg,.webm" class="file-input" />
                 <label for="audio" class="upload-label">
                   <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                   <span class="upload-text" id="uploadText">Click to upload</span>
                 </label>
@@ -57,10 +46,10 @@
             <!-- Reference Text -->
             <div class="form-group">
               <label class="form-label">Reference Text</label>
-              <textarea
-                id="reference"
-                rows="3"
+              <textarea 
+                id="reference" 
                 placeholder="Enter reference transcript..."
+                rows="3"
               ></textarea>
             </div>
 
@@ -90,24 +79,23 @@
               <svg class="note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <circle cx="12" cy="12" r="10" stroke-width="2"/>
                 <line x1="12" y1="16" x2="12" y2="12" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="12" cy="8" r="0.5" fill="currentColor"/>
+                <circle cx="12" cy="8" r="0.5" fill="currentColor" stroke="none"/>
               </svg>
               <p><strong>Note:</strong> Google STT requires language selection</p>
             </div>
 
-            <!-- Submit -->
+            <!-- Submit Button -->
             <button type="submit" id="submitBtn">
               Compare STT Providers
             </button>
-
           </form>
         </div>
 
-        <!-- RIGHT COLUMN (RESULTS) -->
+        <!-- RIGHT COLUMN - RESULTS (70%) -->
         <div class="results-section">
           <h3 class="results-label">Results</h3>
 
-          <!-- Empty -->
+          <!-- Empty State -->
           <div id="emptyState" class="empty-state">
             <svg class="empty-icon" viewBox="0 0 24 24" fill="currentColor">
               <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
@@ -115,14 +103,15 @@
             <p>Results will appear here after comparison</p>
           </div>
 
-          <!-- Loading -->
+          <!-- Loading State -->
           <div id="loading" class="loading-state hidden">
             <div class="spinner"></div>
             <p>Comparing providers...</p>
           </div>
 
-          <!-- Results -->
+          <!-- Results Container -->
           <div id="resultsContainer" class="results-container hidden">
+            <!-- Table Header -->
             <div class="table-header">
               <div class="col-provider">Provider</div>
               <div class="col-model">Model</div>
@@ -132,10 +121,10 @@
               <div class="col-transcript">Transcript</div>
             </div>
 
+            <!-- Table Body -->
             <div id="resultsBody" class="table-body"></div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
