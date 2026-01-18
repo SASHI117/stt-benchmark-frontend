@@ -31,7 +31,9 @@
           <form id="benchmarkForm">
             <!-- Upload Audio -->
             <div class="form-group">
-              <label class="form-label">Upload Audio File</label>
+              <label class="form-label">
+                Upload Audio File <span class="required">*</span>
+              </label>
               <div class="upload-area" id="uploadArea">
                 <input type="file" id="audio" accept=".wav,.mp3,.m4a,.flac,.ogg,.webm" class="file-input" />
                 <label for="audio" class="upload-label">
@@ -45,7 +47,10 @@
 
             <!-- Reference Text -->
             <div class="form-group">
-              <label class="form-label">Reference Text</label>
+              <label class="form-label">
+                Reference Text <span class="required">*</span>
+              </label>
+
               <textarea 
                 id="reference" 
                 placeholder="Enter reference transcript..."
