@@ -2,56 +2,144 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Login | Farm Vaidya</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="login.css" />
+  <title>STT Providers Comparison | Farm Vaidya</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <div class="login-page">
-    <!-- LEFT SIDE (LOGO) -->
-    <div class="login-left">
-      <div class="logo-wrapper">
-        <div class="logo-card">
-          <img src="assets/logo.png" alt="Farm Vaidya Logo" />
-        </div>
-      </div>
+  <!-- HEADER -->
+  <header>
+    <div class="header-content">
+      <img src="assets/logo.png" alt="Farm Vaidya Logo" />
     </div>
-    <!-- RIGHT SIDE (LOGIN FORM) -->
-    <div class="login-right">
-      <div class="login-box">
-        <h2>STT Providers Comparison</h2>
-        <h4>LOGIN</h4>
-        <form id="loginForm" autocomplete="off">
-          <div class="input-group">
-            <span class="icon">👤</span>
-            <input
-              id="username"
-              type="text"
-              name="username"
-              placeholder="Username"
-              autocomplete="off"
-              required
-            />
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+    <!-- Page Title -->
+    <div class="page-title">
+      <h1>STT Providers Comparison</h1>
+      <p class="subtitle">Benchmark Speech-to-Text providers using WER & Latency</p>
+    </div>
+
+    <!-- Main Card -->
+    <div class="container">
+      <div class="grid">
+
+        <!-- LEFT COLUMN (FORM) -->
+        <div class="form-section">
+          <form id="benchmarkForm">
+
+            <!-- Upload Audio -->
+            <div class="form-group">
+              <label class="form-label">Upload Audio File</label>
+              <div class="upload-area">
+                <input
+                  type="file"
+                  id="audio"
+                  accept=".wav,.mp3,.m4a,.flac,.ogg,.webm"
+                  class="file-input"
+                />
+                <label for="audio" class="upload-label">
+                  <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span class="upload-text" id="uploadText">Click to upload</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Reference Text -->
+            <div class="form-group">
+              <label class="form-label">Reference Text</label>
+              <textarea
+                id="reference"
+                rows="3"
+                placeholder="Enter reference transcript..."
+              ></textarea>
+            </div>
+
+            <!-- Language Code -->
+            <div class="form-group">
+              <label class="form-label">Language Code</label>
+              <select id="language_code">
+                <option value="">Auto-detect (All except Google)</option>
+                <option value="as-IN">Assamese</option>
+                <option value="bn-IN">Bengali</option>
+                <option value="en-IN">English - India</option>
+                <option value="gu-IN">Gujarati</option>
+                <option value="hi-IN">Hindi</option>
+                <option value="kn-IN">Kannada</option>
+                <option value="ml-IN">Malayalam</option>
+                <option value="mr-IN">Marathi</option>
+                <option value="or-IN">Odia</option>
+                <option value="pa-IN">Punjabi</option>
+                <option value="sd-IN">Sindhi</option>
+                <option value="ta-IN">Tamil</option>
+                <option value="te-IN">Telugu</option>
+              </select>
+            </div>
+
+            <!-- Note -->
+            <div class="note">
+              <svg class="note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <line x1="12" y1="16" x2="12" y2="12" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="12" cy="8" r="0.5" fill="currentColor"/>
+              </svg>
+              <p><strong>Note:</strong> Google STT requires language selection</p>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" id="submitBtn">
+              Compare STT Providers
+            </button>
+
+          </form>
+        </div>
+
+        <!-- RIGHT COLUMN (RESULTS) -->
+        <div class="results-section">
+          <h3 class="results-label">Results</h3>
+
+          <!-- Empty -->
+          <div id="emptyState" class="empty-state">
+            <svg class="empty-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+            </svg>
+            <p>Results will appear here after comparison</p>
           </div>
-          <div class="input-group">
-            <span class="icon">🔒</span>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              placeholder="Password"
-              autocomplete="new-password"
-              required
-            />
+
+          <!-- Loading -->
+          <div id="loading" class="loading-state hidden">
+            <div class="spinner"></div>
+            <p>Comparing providers...</p>
           </div>
-          <p id="errorMsg" class="error hidden">
-            Incorrect username or password
-          </p>
-          <button type="submit">LOGIN</button>
-        </form>
+
+          <!-- Results -->
+          <div id="resultsContainer" class="results-container hidden">
+            <div class="table-header">
+              <div class="col-provider">Provider</div>
+              <div class="col-model">Model</div>
+              <div class="col-wer">WER</div>
+              <div class="col-latency">Latency (ms)</div>
+              <div class="col-status">Status</div>
+              <div class="col-transcript">Transcript</div>
+            </div>
+
+            <div id="resultsBody" class="table-body"></div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
-  <script src="login.js"></script>
+
+  <script src="script.js"></script>
 </body>
 </html>
