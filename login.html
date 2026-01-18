@@ -25,7 +25,9 @@
         <h2>STT Providers Comparison</h2>
         <h4>LOGIN</h4>
 
-        <form id="loginForm" novalidate>
+        <!-- IMPORTANT: autocomplete OFF -->
+        <form id="loginForm" autocomplete="off">
+
           <!-- USERNAME -->
           <div class="input-group">
             <span class="icon">👤</span>
@@ -33,8 +35,13 @@
               id="username"
               type="text"
               placeholder="Username"
-              required
+              name="fv-username"
               autocomplete="off"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
+              inputmode="text"
+              required
             />
           </div>
 
@@ -45,18 +52,24 @@
               id="password"
               type="password"
               placeholder="Password"
+              name="fv-password"
+              autocomplete="new-password"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
               required
             />
           </div>
 
-          <!-- ERROR -->
+          <!-- ERROR MESSAGE -->
           <p id="errorMsg" class="error hidden">
             Incorrect username or password
           </p>
 
-          <!-- LOGIN BUTTON -->
+          <!-- BUTTON -->
           <button type="submit">LOGIN</button>
         </form>
+
       </div>
     </div>
 
