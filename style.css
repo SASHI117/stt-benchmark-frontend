@@ -404,6 +404,17 @@ button:disabled {
   color: #2E7D32;
 }
 
+.sort-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.sort-arrow {
+  font-size: 12px;
+  line-height: 1;
+}
 .col-wer,
 .col-latency,
 .col-status,
