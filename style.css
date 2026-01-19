@@ -391,6 +391,18 @@ button:disabled {
   top: 0;
   z-index: 5;
 }
+/* ===============================
+   SORTABLE TABLE HEADERS
+================================ */
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.sortable:hover {
+  color: #2E7D32;
+}
 
 .col-wer,
 .col-latency,
