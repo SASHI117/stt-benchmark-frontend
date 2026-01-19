@@ -4,7 +4,19 @@ const session = JSON.parse(localStorage.getItem("session"));
 if (!session || session.user !== "admin@example.com") {
   window.location.href = "login_new.html";
 }
-// DOM Elements
+
+// ===============================
+// GLOBAL STATE FOR SORTING
+// ===============================
+let currentResults = [];
+let sortState = {
+  wer: "asc",
+  latency_ms: "asc"
+};
+
+// ===============================
+// DOM ELEMENTS
+// ===============================
 const form = document.getElementById("benchmarkForm");
 const audioInput = document.getElementById("audio");
 const uploadText = document.getElementById("uploadText");
@@ -17,13 +29,17 @@ const loading = document.getElementById("loading");
 const resultsContainer = document.getElementById("resultsContainer");
 const resultsBody = document.getElementById("resultsBody");
 
-// Update upload text when file is selected
+// ===============================
+// FILE UPLOAD UI
+// ===============================
 audioInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   uploadText.textContent = file ? file.name : "Click to upload";
 });
 
-// Form Submit Handler
+// ===============================
+// FORM SUBMIT HANDLER
+// ===============================
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -43,7 +59,6 @@ form.addEventListener("submit", async (e) => {
   resultsContainer.classList.add("hidden");
   submitBtn.disabled = true;
   submitBtn.textContent = "Comparing...";
-
   resultsBody.innerHTML = "";
 
   // Prepare form data
@@ -68,16 +83,11 @@ form.addEventListener("submit", async (e) => {
     }
 
     const data = await response.json();
-    const results = data.results;
 
-    // Sort by WER (ascending)
-    results.sort((a, b) => {
-      if (a.wer == null) return 1;
-      if (b.wer == null) return -1;
-      return a.wer - b.wer;
-    });
+    // 🔹 STORE RESULTS (NO DEFAULT SORT)
+    currentResults = data.results;
 
-    renderResults(results);
+    renderResults(currentResults);
 
     loading.classList.add("hidden");
     resultsContainer.classList.remove("hidden");
@@ -93,7 +103,9 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// Render Results
+// ===============================
+// RENDER RESULTS (UNCHANGED LOGIC)
+// ===============================
 function renderResults(results) {
   resultsBody.innerHTML = "";
 
@@ -149,7 +161,7 @@ function renderResults(results) {
     transcriptBox.textContent = result.text || "—";
     transcriptCell.appendChild(transcriptBox);
 
-    // Append cells (ORDER MATCHES HEADER)
+    // Append cells
     row.appendChild(providerCell);
     row.appendChild(modelCell);
     row.appendChild(werCell);
@@ -160,3 +172,26 @@ function renderResults(results) {
     resultsBody.appendChild(row);
   });
 }
+
+// ===============================
+// SORTING HANDLERS (NEW FEATURE)
+// ===============================
+document.querySelectorAll(".sortable").forEach((header) => {
+  header.addEventListener("click", () => {
+    const key = header.dataset.sort;
+
+    // Toggle sort order
+    sortState[key] = sortState[key] === "asc" ? "desc" : "asc";
+
+    currentResults.sort((a, b) => {
+      if (a[key] == null) return 1;
+      if (b[key] == null) return -1;
+
+      return sortState[key] === "asc"
+        ? a[key] - b[key]
+        : b[key] - a[key];
+    });
+
+    renderResults(currentResults);
+  });
+});
