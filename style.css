@@ -283,23 +283,30 @@ button:disabled {
 ================================ */
 #downloadJsonBtn {
   width: auto;
-  align-self: flex-end;
+  margin-left: auto;              /* push to end of header */
   margin-bottom: 12px;
   padding: 10px 16px;
   font-size: 14px;
   font-weight: 700;
-  background: #1976D2; /* Blue */
+  background: #4CAF50;             /* SAME GREEN AS SUBMIT */
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;             /* match submit button */
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 #downloadJsonBtn:hover {
-  background: #1565C0;
-  box-shadow: 0 6px 16px rgba(25, 118, 210, 0.4);
+  background: #2E7D32;             /* same hover green */
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+#downloadJsonBtn:active {
+  transform: scale(0.97);
 }
 
 /* ===============================
