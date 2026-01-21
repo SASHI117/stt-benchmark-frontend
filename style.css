@@ -281,32 +281,32 @@ button:disabled {
 /* ===============================
    DOWNLOAD JSON BUTTON
 ================================ */
+/* ===============================
+   DOWNLOAD JSON BUTTON (HEADER)
+================================ */
 #downloadJsonBtn {
   width: auto;
-  margin-left: auto;              /* push to end of header */
-  margin-bottom: 12px;
-  padding: 10px 16px;
-  font-size: 14px;
+  padding: 6px 12px;
+  font-size: 13px;
   font-weight: 700;
-  background: #4CAF50;             /* SAME GREEN AS SUBMIT */
+  background: #4CAF50;              /* Same green as submit */
   color: white;
   border: none;
-  border-radius: 12px;             /* match submit button */
+  border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  white-space: nowrap;
+
+  /* Alignment */
+  margin-left: auto;                /* Push to extreme right */
+  height: 32px;
+
+  box-shadow: 0 3px 8px rgba(76, 175, 80, 0.25);
   transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
 }
 
 #downloadJsonBtn:hover {
-  background: #2E7D32;             /* same hover green */
-  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
-}
-
-#downloadJsonBtn:active {
-  transform: scale(0.97);
+  background: #2E7D32;
+  box-shadow: 0 5px 12px rgba(46, 125, 50, 0.35);
 }
 
 /* ===============================
@@ -422,6 +422,11 @@ button:disabled {
   top: 0;
   z-index: 5;
 }
+
+.table-header {
+  align-items: center;
+}
+
 /* ===============================
    SORTABLE TABLE HEADERS
 ================================ */
