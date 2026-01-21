@@ -124,11 +124,6 @@
           <!-- Results -->
           <div id="resultsContainer" class="results-container hidden">
 
-            <!-- 🔽 DOWNLOAD BUTTON (NEW) -->
-            <button id="downloadJsonBtn" class="hidden" style="margin-bottom: 12px;">
-              ⬇ Download Results (JSON)
-            </button>
-
             <!-- Table Header -->
             <div class="table-header">
               <div class="col-provider">Provider</div>
@@ -140,7 +135,14 @@
                 <span class="sort-label">Latency (ms) <span class="sort-arrow">⬍</span></span>
               </div>
               <div class="col-status">Status</div>
-              <div class="col-transcript">Transcript</div>
+
+              <!-- 🔥 TRANSCRIPT + DOWNLOAD BUTTON -->
+              <div class="col-transcript transcript-header">
+                Transcript
+                <button id="downloadJsonBtn" class="download-btn hidden">
+                  ⬇ Download Results (JSON)
+                </button>
+              </div>
             </div>
 
             <!-- Table Body -->
