@@ -285,28 +285,29 @@ button:disabled {
    DOWNLOAD JSON BUTTON (HEADER)
 ================================ */
 #downloadJsonBtn {
-  width: auto;
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 700;
-  background: #4CAF50;              /* Same green as submit */
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+
+  background: #4CAF50;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
+
+  /* 🔥 GRID ALIGNMENT */
+  justify-self: end;
+
+  height: 28px;
   white-space: nowrap;
 
-  /* Alignment */
-  margin-left: auto;                /* Push to extreme right */
-  height: 32px;
-
-  box-shadow: 0 3px 8px rgba(76, 175, 80, 0.25);
+  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.25);
   transition: all 0.2s ease;
 }
 
 #downloadJsonBtn:hover {
   background: #2E7D32;
-  box-shadow: 0 5px 12px rgba(46, 125, 50, 0.35);
+  box-shadow: 0 4px 10px rgba(46, 125, 50, 0.35);
 }
 
 /* ===============================
@@ -410,20 +411,32 @@ button:disabled {
 /* Table Header */
 .table-header {
   display: grid;
-  grid-template-columns: 10% 12% 8% 10% 10% 50%;
-  gap: 12px;
-  padding: 12px 16px;
+
+  /* 🔥 ADD EXTRA COLUMN FOR BUTTON */
+  grid-template-columns: 
+    10%   /* Provider */
+    12%   /* Model */
+    8%    /* WER */
+    10%   /* Latency */
+    10%   /* Status */
+    1fr   /* Transcript */
+    auto; /* Download button */
+
+  gap: 10px;
+
+  /* 🔽 Reduce header height */
+  padding: 8px 12px;
+
   background: #f1f8f3;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-dark);
+
   position: sticky;
   top: 0;
   z-index: 5;
-}
 
-.table-header {
   align-items: center;
 }
 
