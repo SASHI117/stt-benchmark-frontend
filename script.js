@@ -1,14 +1,17 @@
-// 🔐 AUTH GUARD (ADD THIS AT TOP)
+// 🔐 AUTH GUARD
 const session = JSON.parse(localStorage.getItem("session"));
-
 if (!session || session.user !== "admin@example.com") {
   window.location.href = "login_new.html";
 }
 
 // ===============================
-// GLOBAL STATE FOR SORTING
+// GLOBAL STATE
 // ===============================
 let currentResults = [];
+let currentMeta = {
+  audio_file: "",
+  reference_text: ""
+};
 let sortState = {
   wer: "asc",
   latency_ms: "asc"
@@ -28,6 +31,7 @@ const emptyState = document.getElementById("emptyState");
 const loading = document.getElementById("loading");
 const resultsContainer = document.getElementById("resultsContainer");
 const resultsBody = document.getElementById("resultsBody");
+const downloadBtn = document.getElementById("downloadJsonBtn"); // ⬇
 
 // ===============================
 // FILE UPLOAD UI
@@ -47,21 +51,24 @@ form.addEventListener("submit", async (e) => {
   const referenceText = referenceInput.value.trim();
   const languageCode = languageSelect.value;
 
-  // Validation
   if (!audioFile || !referenceText) {
     alert("Please provide both audio file and reference text");
     return;
   }
 
-  // UI State
+  // Store metadata for download
+  currentMeta.audio_file = audioFile.name;
+  currentMeta.reference_text = referenceText;
+
+  // UI state
   emptyState.classList.add("hidden");
   loading.classList.remove("hidden");
   resultsContainer.classList.add("hidden");
+  downloadBtn.classList.add("hidden");
   submitBtn.disabled = true;
   submitBtn.textContent = "Comparing...";
   resultsBody.innerHTML = "";
 
-  // Prepare form data
   const formData = new FormData();
   formData.append("audio", audioFile);
   formData.append("reference_text", referenceText);
@@ -83,14 +90,13 @@ form.addEventListener("submit", async (e) => {
     }
 
     const data = await response.json();
-
-    // 🔹 STORE RESULTS (NO DEFAULT SORT)
     currentResults = data.results;
 
     renderResults(currentResults);
 
     loading.classList.add("hidden");
     resultsContainer.classList.remove("hidden");
+    downloadBtn.classList.remove("hidden"); // ⬇ show download button
 
   } catch (error) {
     console.error(error);
@@ -104,7 +110,7 @@ form.addEventListener("submit", async (e) => {
 });
 
 // ===============================
-// RENDER RESULTS (UNCHANGED LOGIC)
+// RENDER RESULTS
 // ===============================
 function renderResults(results) {
   resultsBody.innerHTML = "";
@@ -161,7 +167,6 @@ function renderResults(results) {
     transcriptBox.textContent = result.text || "—";
     transcriptCell.appendChild(transcriptBox);
 
-    // Append cells
     row.appendChild(providerCell);
     row.appendChild(modelCell);
     row.appendChild(werCell);
@@ -174,19 +179,16 @@ function renderResults(results) {
 }
 
 // ===============================
-// SORTING HANDLERS (NEW FEATURE)
+// SORTING HANDLERS
 // ===============================
 document.querySelectorAll(".sortable").forEach((header) => {
   header.addEventListener("click", () => {
     const key = header.dataset.sort;
-
-    // Toggle sort order
     sortState[key] = sortState[key] === "asc" ? "desc" : "asc";
 
     currentResults.sort((a, b) => {
       if (a[key] == null) return 1;
       if (b[key] == null) return -1;
-
       return sortState[key] === "asc"
         ? a[key] - b[key]
         : b[key] - a[key];
@@ -194,4 +196,33 @@ document.querySelectorAll(".sortable").forEach((header) => {
 
     renderResults(currentResults);
   });
+});
+
+// ===============================
+// DOWNLOAD RESULTS AS JSON ⬇
+// ===============================
+downloadBtn.addEventListener("click", () => {
+  const exportData = {
+    audio_file: currentMeta.audio_file,
+    reference_text: currentMeta.reference_text,
+    results: currentResults.map(r => ({
+      provider: r.provider,
+      model: r.model,
+      transcript: r.text,
+      wer: r.wer,
+      latency_ms: r.latency_ms
+    }))
+  };
+
+  const blob = new Blob(
+    [JSON.stringify(exportData, null, 2)],
+    { type: "application/json" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "stt_benchmark_results.json";
+  a.click();
+  URL.revokeObjectURL(url);
 });
