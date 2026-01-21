@@ -12,6 +12,7 @@ let currentMeta = {
   audio_file: "",
   reference_text: ""
 };
+
 let sortState = {
   wer: "asc",
   latency_ms: "asc"
@@ -31,7 +32,7 @@ const emptyState = document.getElementById("emptyState");
 const loading = document.getElementById("loading");
 const resultsContainer = document.getElementById("resultsContainer");
 const resultsBody = document.getElementById("resultsBody");
-const downloadBtn = document.getElementById("downloadJsonBtn"); // ⬇
+const downloadBtn = document.getElementById("downloadJsonBtn");
 
 // ===============================
 // FILE UPLOAD UI
@@ -56,11 +57,11 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // Store metadata for download
+  // Store metadata for JSON export
   currentMeta.audio_file = audioFile.name;
   currentMeta.reference_text = referenceText;
 
-  // UI state
+  // UI state reset
   emptyState.classList.add("hidden");
   loading.classList.remove("hidden");
   resultsContainer.classList.add("hidden");
@@ -96,7 +97,7 @@ form.addEventListener("submit", async (e) => {
 
     loading.classList.add("hidden");
     resultsContainer.classList.remove("hidden");
-    downloadBtn.classList.remove("hidden"); // ⬇ show download button
+    downloadBtn.classList.remove("hidden");
 
   } catch (error) {
     console.error(error);
@@ -119,28 +120,23 @@ function renderResults(results) {
     const row = document.createElement("div");
     row.className = "result-row";
 
-    // Provider
     const providerCell = document.createElement("div");
     providerCell.className = "provider-name";
     providerCell.textContent = result.provider;
 
-    // Model
     const modelCell = document.createElement("div");
     modelCell.className = "model-name";
     modelCell.textContent = result.model || "—";
 
-    // WER
     const werCell = document.createElement("div");
     werCell.className = "wer-value";
     werCell.textContent = result.wer != null ? result.wer.toFixed(3) : "-";
 
-    // Latency
     const latencyCell = document.createElement("div");
     latencyCell.className = "latency-value";
     latencyCell.textContent =
       result.latency_ms != null ? `${result.latency_ms} ms` : "-";
 
-    // Status
     const statusCell = document.createElement("div");
     statusCell.style.textAlign = "center";
 
@@ -160,7 +156,6 @@ function renderResults(results) {
     statusBadge.appendChild(statusText);
     statusCell.appendChild(statusBadge);
 
-    // Transcript
     const transcriptCell = document.createElement("div");
     const transcriptBox = document.createElement("div");
     transcriptBox.className = "transcript-box";
@@ -202,6 +197,8 @@ document.querySelectorAll(".sortable").forEach((header) => {
 // DOWNLOAD RESULTS AS JSON ⬇
 // ===============================
 downloadBtn.addEventListener("click", () => {
+  if (!currentResults.length) return;
+
   const exportData = {
     audio_file: currentMeta.audio_file,
     reference_text: currentMeta.reference_text,
@@ -222,7 +219,7 @@ downloadBtn.addEventListener("click", () => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "stt_benchmark_results.json";
+  a.download = `stt_benchmark_${Date.now()}.json`;
   a.click();
   URL.revokeObjectURL(url);
 });
