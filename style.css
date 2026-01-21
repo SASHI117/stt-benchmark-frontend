@@ -279,6 +279,30 @@ button:disabled {
 }
 
 /* ===============================
+   DOWNLOAD JSON BUTTON
+================================ */
+#downloadJsonBtn {
+  width: auto;
+  align-self: flex-end;
+  margin-bottom: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  background: #1976D2; /* Blue */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+  transition: all 0.2s ease;
+}
+
+#downloadJsonBtn:hover {
+  background: #1565C0;
+  box-shadow: 0 6px 16px rgba(25, 118, 210, 0.4);
+}
+
+/* ===============================
    RESULTS SECTION (RIGHT 70%)
 ================================ */
 .results-section {
