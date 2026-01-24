@@ -223,3 +223,9 @@ downloadBtn.addEventListener("click", () => {
   a.click();
   URL.revokeObjectURL(url);
 });
+const logoutBtn = document.getElementById("logoutBtn");
+
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("session");
+  window.location.href = "login_new.html";
+});
