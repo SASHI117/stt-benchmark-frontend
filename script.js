@@ -79,7 +79,7 @@ form.addEventListener("submit", async (e) => {
 
   try {
     const response = await fetch(
-      "https://stt-benchmark-backend-production.up.railway.app/benchmark",
+      "https://stt-benchmark-backend.onrender.com/benchmark",
       {
         method: "POST",
         body: formData
