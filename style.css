@@ -62,8 +62,13 @@ header {
   padding: 16px 48px;
 }
 
-header img {
-  height: 80px;
+.brand {
+  display: inline-block;
+  padding: 18px 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-dark);
 }
 
 .header-flex {
@@ -661,8 +666,8 @@ button:disabled {
     padding: 20px;
   }
 
-  header img {
-    height: 60px;
+  .brand {
+    font-size: 18px;
   }
 
   .table-header,
