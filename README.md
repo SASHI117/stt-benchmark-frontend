@@ -49,6 +49,9 @@ Any static host works (Vercel, Netlify, GitHub Pages, Nginx). Set
 `backendUrl` in `config.js`, and add the frontend's origin to the backend's
 `CORS_ORIGINS`.
 
+The default `backendUrl` is the original Render deployment, which is no longer
+responding, so point it at your own backend before deploying.
+
 ## Tests
 
 ```bash
