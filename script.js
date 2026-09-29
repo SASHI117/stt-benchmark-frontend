@@ -1,9 +1,3 @@
-// 🔐 AUTH GUARD
-const session = JSON.parse(localStorage.getItem("session"));
-if (!session || session.user !== "admin@example.com") {
-  window.location.href = "login_new.html";
-}
-
 // ===============================
 // GLOBAL STATE
 // ===============================
@@ -222,10 +216,4 @@ downloadBtn.addEventListener("click", () => {
   a.download = `stt_benchmark_${Date.now()}.json`;
   a.click();
   URL.revokeObjectURL(url);
-});
-const logoutBtn = document.getElementById("logoutBtn");
-
-logoutBtn.addEventListener("click", () => {
-  localStorage.removeItem("session");
-  window.location.href = "login_new.html";
 });
