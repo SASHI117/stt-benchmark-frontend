@@ -573,6 +573,20 @@ button:disabled {
   color: #ef4444;
 }
 
+.status-badge.skipped {
+  background: rgba(107, 114, 128, 0.12);
+  color: #6b7280;
+}
+
+.status-badge.skipped .status-dot {
+  background: #6b7280;
+}
+
+.transcript-box.error-text {
+  color: #b91c1c;
+  font-style: italic;
+}
+
 .status-dot {
   width: 6px;
   height: 6px;

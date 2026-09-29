@@ -4,8 +4,12 @@
 let currentResults = [];
 let currentMeta = {
   audio_file: "",
-  reference_text: ""
+  reference_text: "",
+  language_code: ""
 };
+
+const { statusInfo, formatWer, formatLatency, sortResults, buildExport } = window.BenchLib;
+const BACKEND_URL = window.STT_CONFIG.backendUrl.replace(/\/$/, "");
 
 let sortState = {
   wer: "asc",
@@ -54,6 +58,7 @@ form.addEventListener("submit", async (e) => {
   // Store metadata for JSON export
   currentMeta.audio_file = audioFile.name;
   currentMeta.reference_text = referenceText;
+  currentMeta.language_code = languageCode;
 
   // UI state reset
   emptyState.classList.add("hidden");
@@ -72,16 +77,14 @@ form.addEventListener("submit", async (e) => {
   }
 
   try {
-    const response = await fetch(
-      "https://stt-benchmark-backend.onrender.com/benchmark",
-      {
-        method: "POST",
-        body: formData
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/benchmark`, {
+      method: "POST",
+      body: formData
+    });
 
     if (!response.ok) {
-      throw new Error(`Server error: ${response.status}`);
+      const detail = await response.json().then((d) => d.detail).catch(() => null);
+      throw new Error(detail || `Server error: ${response.status}`);
     }
 
     const data = await response.json();
@@ -95,7 +98,7 @@ form.addEventListener("submit", async (e) => {
 
   } catch (error) {
     console.error(error);
-    alert("Failed to connect to backend");
+    alert(`Benchmark failed: ${error.message}`);
     loading.classList.add("hidden");
     emptyState.classList.remove("hidden");
   } finally {
@@ -124,27 +127,25 @@ function renderResults(results) {
 
     const werCell = document.createElement("div");
     werCell.className = "wer-value";
-    werCell.textContent = result.wer != null ? result.wer.toFixed(3) : "-";
+    werCell.textContent = formatWer(result.wer);
 
     const latencyCell = document.createElement("div");
     latencyCell.className = "latency-value";
-    latencyCell.textContent =
-      result.latency_ms != null ? `${result.latency_ms} ms` : "-";
+    latencyCell.textContent = formatLatency(result.latency_ms);
 
     const statusCell = document.createElement("div");
     statusCell.style.textAlign = "center";
 
+    const status = statusInfo(result);
     const statusBadge = document.createElement("span");
-    statusBadge.className = `status-badge ${
-      result.status === "success" ? "success" : "failed"
-    }`;
+    statusBadge.className = `status-badge ${status.cls}`;
+    if (result.error) statusBadge.title = result.error;
 
     const statusDot = document.createElement("div");
     statusDot.className = "status-dot";
 
     const statusText = document.createElement("span");
-    statusText.textContent =
-      result.status === "success" ? "Success" : "Failed";
+    statusText.textContent = status.label;
 
     statusBadge.appendChild(statusDot);
     statusBadge.appendChild(statusText);
@@ -153,7 +154,9 @@ function renderResults(results) {
     const transcriptCell = document.createElement("div");
     const transcriptBox = document.createElement("div");
     transcriptBox.className = "transcript-box";
-    transcriptBox.textContent = result.text || "—";
+    // Show why a provider produced nothing instead of a bare dash.
+    transcriptBox.textContent = result.text || result.error || "—";
+    if (!result.text && result.error) transcriptBox.classList.add("error-text");
     transcriptCell.appendChild(transcriptBox);
 
     row.appendChild(providerCell);
@@ -175,14 +178,7 @@ document.querySelectorAll(".sortable").forEach((header) => {
     const key = header.dataset.sort;
     sortState[key] = sortState[key] === "asc" ? "desc" : "asc";
 
-    currentResults.sort((a, b) => {
-      if (a[key] == null) return 1;
-      if (b[key] == null) return -1;
-      return sortState[key] === "asc"
-        ? a[key] - b[key]
-        : b[key] - a[key];
-    });
-
+    currentResults = sortResults(currentResults, key, sortState[key]);
     renderResults(currentResults);
   });
 });
@@ -193,17 +189,7 @@ document.querySelectorAll(".sortable").forEach((header) => {
 downloadBtn.addEventListener("click", () => {
   if (!currentResults.length) return;
 
-  const exportData = {
-    audio_file: currentMeta.audio_file,
-    reference_text: currentMeta.reference_text,
-    results: currentResults.map(r => ({
-      provider: r.provider,
-      model: r.model,
-      transcript: r.text,
-      wer: r.wer,
-      latency_ms: r.latency_ms
-    }))
-  };
+  const exportData = buildExport(currentMeta, currentResults);
 
   const blob = new Blob(
     [JSON.stringify(exportData, null, 2)],

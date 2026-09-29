@@ -1,0 +1,10 @@
+{
+  "name": "stt-benchmark-frontend",
+  "private": true,
+  "description": "Static UI for the STT benchmark backend",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check lib.js && node --check script.js && node --check config.js",
+    "serve": "npx --yes serve -l 5173 ."
+  }
+}
