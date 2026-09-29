@@ -1,201 +1,66 @@
-# Benchmarking_STT_frontend
+# STT Benchmark — Frontend
 
-Web-based frontend for the **Farm Vaidya Speech-to-Text (STT) Benchmarking Platform**, built using **HTML, CSS, and Vanilla JavaScript**.
+[![CI](https://github.com/SASHI117/stt-benchmark-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/SASHI117/stt-benchmark-frontend/actions/workflows/ci.yml)
+![No build step](https://img.shields.io/badge/build-none-lightgrey)
 
-This frontend provides login access, audio upload, reference text input, benchmarking across multiple STT providers, result visualization, and JSON export of benchmark results.
+The web UI for [stt-benchmark-backend](https://github.com/SASHI117/stt-benchmark-backend).
+Upload a clip, paste the reference transcript, optionally pick a language,
+and compare every configured speech-to-text provider side by side on
+**WER** and **latency**. It is plain HTML, CSS and JavaScript, so there is
+nothing to build and it can be hosted anywhere static files are served.
 
----
+![Benchmark form](docs/screenshot.png)
 
-## 📌 Overview
+## What it does
 
-This frontend is a **static web application** that allows multiple users to benchmark different Speech-to-Text (STT) providers through a unified, easy-to-use interface.
+- Sends `multipart/form-data` (`audio`, `reference_text`, `language_code`) to `POST /benchmark`
+- Renders one row per provider/model with WER, latency, a
+  **Success / Skipped / Failed** badge, and the transcript. When a provider
+  returns nothing, the row shows the provider's error message instead
+- Sorts by WER or latency. Rows without a value always sort to the bottom
+- Exports the run as JSON (reference, language, per-model transcript, WER,
+  latency, status, error) for offline comparison across many clips
 
-It communicates with a **FastAPI backend** via REST APIs and is designed to be **cloud-agnostic**, supporting deployment on platforms such as:
+## Files
 
-* **Azure VM (with Nginx / reverse proxy)**
-* **Vercel**
-* **Railway**
-* **Any static hosting service**
+| File | Purpose |
+|---|---|
+| `index.html`, `style.css` | Layout and styling |
+| `config.js` | Backend URL, the only thing to change per deployment |
+| `lib.js` | Pure helpers (status mapping, sorting, formatting, export), shared with the tests |
+| `script.js` | DOM wiring: form submit, rendering, sorting, download |
+| `tests/lib.test.js` | `node:test` unit tests for `lib.js` |
 
-The frontend is completely decoupled from backend infrastructure and requires **no build step**.
+## Running locally
 
----
-
-## 🧱 Technology Stack
-
-* **HTML5** – Page structure
-* **CSS3** – Styling and responsive layout
-* **JavaScript (ES6)** – Client-side logic and API integration
-* **Deployment:** Static hosting (Vercel / Azure Static Web Apps / Nginx on VM)
-* **Version Control:** GitHub (FarmVaidya Organization)
-
----
-
-## 📂 Project Structure
-
-```
-Benchmarking_STT_frontend/
-├── assets/
-│   ├── bg.svg
-│   └── logo.png
-├── index.html
-├── login_new.html
-├── style.css
-├── login_new.css
-├── script.js
-├── favicon.ico
-├── login_new.js
-├── vercel.json
-├── README.md
+```bash
+# 1. start the backend on :8000 (see the backend README)
+# 2. serve this folder
+npx serve -l 5173 .        # or: python -m http.server 5173
 ```
 
----
+Open <http://localhost:5173>. When the page is served from `localhost`,
+`config.js` points at `http://localhost:8000`. Otherwise it uses the URL set in
+that file.
 
-## 🔐 Authentication Note
+## Deploying
 
-The frontend currently uses **client-side authentication** intended for demo, internal testing, and MVP usage.
+Any static host works (Vercel, Netlify, GitHub Pages, Nginx). Set
+`backendUrl` in `config.js`, and add the frontend's origin to the backend's
+`CORS_ORIGINS`.
 
-* Login credentials are **hardcoded in JavaScript**
-* Authentication is handled using **localStorage**
-* This approach is **not production-grade security**
+## Tests
 
-> 🔒 **Planned Improvement:** Backend-based authentication using secure tokens (JWT) and role-based access control.
-
----
-
-## 🔗 Backend Integration
-
-The frontend communicates with the backend using REST APIs exposed by a **FastAPI service**.
-
-### Backend API Configuration (Environment-aware)
-
-The backend URL is configured in **one centralized place** inside `script.js`:
-
-```javascript
-const BACKEND_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:8000"
-    : "/api";
+```bash
+npm test          # node:test, no dependencies
+npm run check     # syntax check of every script
 ```
 
-### How this works
+## Security note
 
-* **Local Development**
-
-  * Connects to FastAPI running on `http://localhost:8000`
-* **Production / Azure VM / Organization Infra**
-
-  * Uses `/api` routed via **Nginx reverse proxy**
-* **Static Hosting (Vercel / CDN)**
-
-  * Backend URL can be proxied or replaced without code changes
-
-👉 Only this configuration needs adjustment when switching environments.
-
----
-
-### API Endpoint Used
-
-```
-POST /benchmark
-```
-
----
-
-## 🔄 Data Flow
-
-1. User logs in
-2. User uploads an audio file
-3. User enters a reference transcript
-4. User submits the benchmark request
-5. Frontend sends `multipart/form-data` to backend
-6. Backend evaluates multiple STT providers
-7. Backend returns JSON results
-8. Frontend displays:
-
-   * Provider name
-   * Model name
-   * Transcript
-   * Word Error Rate (WER)
-   * Latency (ms)
-   * Status (success / failure)
-
----
-
-## 📥 Results Export (JSON Download)
-
-The frontend includes a **Download** button that allows users to export benchmarking results in **JSON format**.
-
-### Exported JSON Contains
-
-* Audio file name
-* Reference transcript
-* For each STT provider:
-
-  * Provider name
-  * Model name
-  * Generated transcript
-  * Word Error Rate (WER)
-  * Latency (ms)
-
-### Use cases
-
-* Offline analysis
-* Model comparison
-* Reporting and audits
-* Dataset generation for research
-
-The downloaded file is generated entirely on the client side.
-
----
-
-## 🚀 Deployment Flow
-
-### 1️⃣ Static Hosting Deployment
-
-This frontend can be deployed using:
-
-* **Vercel**
-* **Azure Static Web Apps**
-* **Nginx on Azure VM**
-* **Any CDN or static hosting service**
-
-No build command or framework configuration is required.
-
----
-
-### 2️⃣ Azure VM
-
-For Azure VM or on-prem infrastructure:
-
-* Frontend is served via **Nginx**
-* Backend runs as a separate FastAPI service
-* Nginx reverse proxy routes `/api` → backend service
-* Frontend remains unchanged
-
----
-
-## ⚙️ Configuration Notes
-
-* Backend API URL is **centralized and environment-aware**
-* Frontend is **fully decoupled** from backend deployment
-* No Docker, Railway, or Vercel-specific files are mandatory
-* Works identically across environments
-
----
-
-## 📌 Versioning
-
-* **v1.0** – Initial STT Benchmarking Frontend
-* **v1.1** – Environment-aware backend configuration, JSON export
-* **v1.2 (Planned)** – Secure authentication, role-based access, UI enhancements
-
----
-
-## 🧠 One-line Summary
-
-> A cloud-agnostic static frontend for benchmarking multiple Speech-to-Text providers, featuring environment-aware backend integration and JSON result export.
-
----
-
-Just say the word.
+An earlier version had a login page that checked a username and password
+**hard-coded in the JavaScript**. Anyone can read that from the page source,
+so it protected nothing. I removed it rather than hide it better, because
+access control has to be enforced where the API keys are, on the backend
+or a gateway in front of it. Until that exists, deploy the backend
+privately or restrict `CORS_ORIGINS`.
