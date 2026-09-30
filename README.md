@@ -49,8 +49,7 @@ Any static host works (Vercel, Netlify, GitHub Pages, Nginx). Set
 `backendUrl` in `config.js`, and add the frontend's origin to the backend's
 `CORS_ORIGINS`.
 
-The default `backendUrl` is the original Render deployment, which is no longer
-responding, so point it at your own backend before deploying.
+Point `backendUrl` at your own backend deployment before publishing.
 
 ## Tests
 
@@ -59,11 +58,8 @@ npm test          # node:test, no dependencies
 npm run check     # syntax check of every script
 ```
 
-## Security note
+## Security
 
-An earlier version had a login page that checked a username and password
-**hard-coded in the JavaScript**. Anyone can read that from the page source,
-so it protected nothing. I removed it rather than hide it better, because
-access control has to be enforced where the API keys are, on the backend
-or a gateway in front of it. Until that exists, deploy the backend
-privately or restrict `CORS_ORIGINS`.
+The UI is a static page and holds no credentials or API keys. Access control is enforced
+server-side, where the provider keys live: deploy the backend behind a gateway, or restrict its
+`CORS_ORIGINS` to this frontend's origin.
